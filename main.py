@@ -20,15 +20,41 @@ height_entry.pack()
 
 
 def calculate():
-    weight = weight_entry.get()
-    height = height_entry.get()
 
-    print("Your weight is: ",weight)
-    print("Your height is: ",height)
+    if weight_entry.get() == "" or height_entry.get() == "":
+        result_label.config(text="Please enter your weight and height.")
+        return
 
+
+    try:
+        weight = float(weight_entry.get())
+        height = float(height_entry.get()) / 100
+
+        if height <= 0 or weight <= 0:
+            result_label.config(text="Please enter positive values.")
+            return
+
+        bmi = weight / (height**2)
+
+        if bmi < 18.5:
+            category = "Skinny"
+        elif bmi < 25:
+            category = "Normal"
+        elif bmi < 30:
+            category = "Fat"
+        else:
+            category = "Obese"
+        result_label.config(text=f"BMI Result: {bmi:.2f} - {category}")
+
+    except ValueError:
+        result_label.config(text="Enter numbers!!")
 
 calculate_button = tk.Button(window,text="Calculate",command=calculate)
 calculate_button.pack()
+
+
+result_label = tk.Label(window,text="Result: ")
+result_label.pack()
 
 
 window.mainloop()
